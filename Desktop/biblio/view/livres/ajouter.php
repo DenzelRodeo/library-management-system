@@ -2,7 +2,7 @@
 <?php
 // 1. CONFIGURATION DE LA CONNEXION
 $host = 'localhost';
-$dbname = 'biblio'; // <-- REMPLACEZ PAR LE NOM DE VOTRE BDD
+$dbname = 'biblio'; 
 $user = 'root';
 $pass = '';
 
@@ -12,7 +12,7 @@ try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $user, $pass);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
-    // 2. TRAITEMENT DE L'ENVOI (Se déclenche au clic sur Enregistrer)
+    // 2. TRAITEMENT DE L'ENVOI 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Récupération des données avec vos noms de champs actuels
         $titre = $_POST['titre'];
@@ -20,7 +20,6 @@ try {
         $dateEdition = $_POST['date_edition'];
 
         if (!empty($titre) && !empty($auteur)) {
-            // Assurez-vous que votre table s'appelle 'livres' et a ces colonnes
             $sql = "INSERT INTO livre (titre, auteur, date_edition) VALUES (?, ?, ?)";
             $stmt = $pdo->prepare($sql);
             $stmt->execute([$titre, $auteur, $dateEdition]);

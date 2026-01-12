@@ -1,13 +1,13 @@
 <?php
 $host = 'localhost';
-$dbname = 'votre_nom_bdd'; 
+$dbname = 'biblio'; 
 $user = 'root'; $pass = '';
 
 if (isset($_GET['id'])) {
     try {
         $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $user, $pass);
         
-        $stmt = $pdo->prepare("DELETE FROM etudiants WHERE CodeEtudiant = ?");
+        $stmt = $pdo->prepare("DELETE FROM etudiant WHERE code_etudiant = ?");
         $stmt->execute([$_GET['id']]);
 
         // Redirection vers la liste avec un message de succès
