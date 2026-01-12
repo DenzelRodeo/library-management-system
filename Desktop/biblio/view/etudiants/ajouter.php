@@ -69,7 +69,7 @@ try {
     <div id="wrapper">
 
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="../../index.php">
             <div class="sidebar-brand-icon rotate-n-15">
                 <i class="fas fa-laugh-wink"></i>
             </div>
@@ -79,7 +79,7 @@ try {
         <hr class="sidebar-divider my-0">
 
         <li class="nav-item active">
-            <a class="nav-link" href="index.php">
+            <a class="nav-link" href="../../index.php">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>Acceuil</span>
             </a>
