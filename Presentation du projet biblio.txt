@@ -1,0 +1,72 @@
+I   - ) Presentation du projet biblio 2 et des membres du groupe 7 :
+
+1 -) Projet Biblio 2 :
+
+biblio 2 encore appellé library-management-system(sur GitHub) est un systeme permettant d'informatiser la gestion de biblio.
+
+2-)    Membres Du Groupe 7
+
+=>   Ines Simo (chef de projet)
+
+=>   Idris Kuate
+
+=>   Jordan Tsane
+
+
+II -) Developpement du projet biblio
+
+1-) Interface(front-end) : Utilisation d'un template bootstrap 5 appellé Sb Bootstrap Admin 2 disponible sur
+https://startbootstrap.com/templates/general, Auquelle nous avons ajouter d'autre interface en utilisant des classes de bootstrap 5 .
+
+2-) Arriere Plan (Backend)
+
+a -> Serveur & Base de Données
+
+Nous avons utliser un serveur Apache et un systeme de gestion de base de données MYSQL grace à un environement de developpement XAMP .
+
+b -> Programmation 
+
+Nous avons utiliser le langage de programmation PHP (Hypertext Preprocessor) Pour la connexion à MYSQL  dans le but d'y recuperer de données que nous reverrons à Apache qui ensuite le retournera au navigateur quand l'utilisateur entrera l'url 
+https://biblio.local
+
+c-> Securité
+
+Integration des fontions comme htmlspecialchars() pour proteger l'affichage des données contre les attaques XSS.
+
+
+II -) Contexte Du Projet
+
+1-> Utilisateurs(étudiants ou apprenant)
+
+Biblio 2 est une application web en ligne permettant aux utilisateurs  d'emprunter un livre .
+
+2-> Administrateur (Bibliothequere)
+
+biblio 2 permet à l'admin de gerer sa bibliotheque :
+
+- Voir , Ajouter , Modifier et Supprimer la liste des utilisateurs , des livres et des emprunts
+
+III -) Travail en Equipe & Test 
+
+1 -> Travail en Equipe 
+
+Nous avons utiliser Git et GitHub pour gerer les versions du projet et gerer notre travail en equipe pour cela le chef de projet à envoyer le projet sur le serveur de GitHub et nous a invités à collaborer nous les menbres ainsi que notre formatteur. Chacun de nous à ensuite creer une branche du projet en local.
+
+2-> Test 
+
+Nous avons testées toutes les fontionnalités du projet chez chaque menbre responsable et si le code est etait approuvée 
+la suite etait de faire un commit avec le message "Mise à jour corrective" et à la fin nous avons push(Envoyer) le code sur gitHub.
+
+  IV -) Evolution future du projet
+
+Integration d'une Intelligence Artificielle via l'API Croq Cloud(modéle Llama 3) pour sa rapidité et sa gratuité.
+Il se sera charger de recommander des livres à l'utilisateur en fontion du genre , de l'auteur et de la date d'edition
+et fournira à l'administrateur des recommandation sur livre qui sont les genre , les auteurs et les années d'edition des livres les plus demandées.
+
+
+                                      Merci pour votre Attention ! c'etait le groupe 7
+
+
+
+
+
