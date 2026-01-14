@@ -2,7 +2,7 @@ I   - ) Presentation du projet biblio 2 et des membres du groupe 7 :
 
 1 -) Projet Biblio 2 :
 
-biblio 2 encore appellé library-management-system(sur GitHub) est un systeme permettant d'informatiser la gestion de biblio.
+biblio 2 encore appellé library-management-system(sur GitHub) est un systeme permettant d'informatiser la gestion de bibliotheque.
 
 2-)    Membres Du Groupe 7
 
@@ -26,8 +26,10 @@ Nous avons utliser un serveur Apache et un systeme de gestion de base de donnée
 
 b -> Programmation 
 
-Nous avons utiliser le langage de programmation PHP (Hypertext Preprocessor) Pour la connexion à MYSQL  dans le but d'y recuperer de données que nous reverrons à Apache qui ensuite le retournera au navigateur quand l'utilisateur entrera l'url 
-https://biblio.local
+Nous avons utiliser le langage de programmation PHP (Hypertext Preprocessor) Pour la connexion à MYSQL et l'interpretation de nos fichier .php 
+dans le but de recuperer des données dans la base et convertir les fichier en html que nous renverrons à Apache qui ensuite le retournera au 
+navigateur quand l'utilisateur entrera l'url : https://biblio.local
+
 
 c-> Securité
 

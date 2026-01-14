@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login_btn'])) {
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Biblio 2 - Inscription</title>
+    <title>Biblio 2 - Connection</title>
 
     <!-- Custom fonts for this template-->
     <link
@@ -105,7 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login_btn'])) {
 
     <div class="form-text text-center text-dark">
         Nouveau ici ? <br>
-        <a href="inscription.php" class="text-dark fw-bold" style="text-decoration:underline">Créer un compte</a>
+        <a href="../../index.php" class="text-dark fw-bold" style="text-decoration:underline">Créer un compte</a>
     </div>
 </form>
             </div>
