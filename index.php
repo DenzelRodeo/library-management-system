@@ -4,7 +4,7 @@ $user = 'root' ; $host = 'localhost'; $db = 'biblio' ; $password = '';
 
 try {
 
-   $pdo = new PDO("mysql:host = $host ; dbname = $db ",$user , $password );
+   $pdo = new PDO("mysql:host = $host ; dbname = $db ", $user , $password );
    $pdo -> setAttribute(PDO::ATTR_ERRMODE ,PDO::ERRMODE_EXCEPTION);
    $sql = 'SELECT * FROM etudiant';
    $stmt = $pdo->query($sql);
