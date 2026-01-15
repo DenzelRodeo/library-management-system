@@ -155,7 +155,7 @@ try {
 
                     <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         <div class="input-group">
-                            <input type="text" id="searchInput" class="form-control bg-light border-0 small" placeholder="Rechercher par titre, auteur ou ISBN...">
+                            <input type="text" id="searchInput" class="form-control bg-light border-0 small" placeholder="Rechercher par titre, auteur ou code...">
                             <div class="input-group-append">
                                 <button class="btn btn-primary" type="button">
                                     <i class="fas fa-search fa-sm"></i>
@@ -197,16 +197,16 @@ try {
                                                     <td><?= htmlspecialchars($liv['titre']) ?></td>
                                                     <td><?= htmlspecialchars($liv['auteur']) ?></td>
                                                     <td><?= htmlspecialchars($liv['date_edition']) ?></td>
-                                                    <td>
+                                                    <td style = "display:flex">
                                         <a href="modifier.php?id=<?= $liv['code_livre'] ?>">
         <button class="btn btn-sm btn-info">
-            <i class="fas fa-edit"></i>
+            <i class="fas fa-edit" value= "">modifier</i>
         </button>
     </a>
 
     <a href="supprimer.php?id=<?= $liv['code_livre'] ?>" onclick="return confirm('Supprimer ce livre ?');">
         <button class="btn btn-sm btn-danger">
-            <i class="fas fa-trash"></i>
+            <i class="fas fa-trash">supprimer</i>
         </button>
     </a>
 </td>   

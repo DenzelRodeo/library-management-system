@@ -226,12 +226,12 @@ try {
                                                     <td><?= htmlspecialchars($etu['classe']) ?></td>
                                                     <td>
                                                         <a href="modifier.php?id=<?= $etu['code_etudiant'] ?>" class="btn btn-warning btn-sm">
-                                                            <i class="fas fa-edit"></i>
+                                                            <i class="fas fa-edit">modifier</i>
                                                         </a>
                                                         <a href="supprimer.php?id=<?= $id ?>" 
                                                            class="btn btn-danger btn-sm" 
                                                            onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet étudiant ?');">
-                                                          <i class="fas fa-trash"></i>
+                                                          <i class="fas fa-trash">supprimer</i>
                                                         </a>
                                                     </td>
                                                 </tr>

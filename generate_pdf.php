@@ -38,7 +38,7 @@ try {
     // Tableau des statistiques
     $pdf->SetFillColor(230, 240, 255);
     $pdf->SetFont('Arial', 'B', 12);
-    $pdf->Cell(95, 12, utf8_decode("Indicateur"), 1, 0, 'C', true);
+    $pdf->Cell(95, 12, utf8_decode("Elements"), 1, 0, 'C', true);
     $pdf->Cell(95, 12, utf8_decode("Valeur"), 1, 1, 'C', true);
 
     $pdf->SetFont('Arial', '', 12);
@@ -50,7 +50,7 @@ try {
 
     $pdf->Ln(20);
     $pdf->SetFont('Arial', 'I', 10);
-    $pdf->Cell(0, 10, utf8_decode("Fin du rapport automatique."), 0, 0, 'C');
+    $pdf->Cell(0, 10, utf8_decode("Fin du rapport."), 0, 0, 'C');
     $pdf->Output('I', 'Rapport_Biblio.pdf');
 
 } catch (PDOException $e) {
