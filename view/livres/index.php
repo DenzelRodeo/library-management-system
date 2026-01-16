@@ -70,24 +70,24 @@ try {
 
     <div id="wrapper">
        <div style="display:flex; flex-direction: row">
-    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
-            <div class="sidebar-brand-icon rotate-n-15">
-                <i class="fas fa-book-reader"></i>
-            </div>
-            <div class="sidebar-brand-text mx-3" style="font-weight: bolder">Biblio <sup>2</sup></div>
-        </a>
+            <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+                <a class="sidebar-brand d-flex align-items-center justify-content-center" href="../../index.php">
+                    <div class="sidebar-brand-icon rotate-n-15">
+                        <i class="fas fa-book-reader"></i>
+                    </div>
+                   <div class="sidebar-brand-text mx-3" style="font-weight: bolder">Biblio <sup>2</sup></div>
+              </a>
 
-        <hr class="sidebar-divider my-0">
+            <hr class="sidebar-divider my-0">
 
-        <li class="nav-item active">
-            <a class="nav-link" href="../../index.php">
-                <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>Acceuil</span>
-            </a>
-        </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="../../index.php">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Acceuil</span>
+               </a>
+           </li>
 
-        <hr class="sidebar-divider">
+            <hr class="sidebar-divider">
 
         <div class="sidebar-heading">Interface</div>
 

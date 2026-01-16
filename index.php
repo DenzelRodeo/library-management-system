@@ -64,7 +64,7 @@ try {
 
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" data-toggle="dropdown">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?php echo $_SESSION['user_nom']; ?></span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Jordan Tsane</span>
                                 <img class="img-profile rounded-circle" src="img/undraw_profile.svg">
                             </a>
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in">
