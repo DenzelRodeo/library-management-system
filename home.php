@@ -1,5 +1,11 @@
  
 <?php
+session_start();
+if (!isset($_SESSION['id'])) {
+    
+header("Location: index.php");
+exit();
+}
 $host = 'localhost';
 $dbname = 'biblio'; 
 $user = 'root';
@@ -42,6 +48,34 @@ try {
         .bg-primary, .btn-primary, .dropdown-header { background-color: #009879 !important; border-color: #009879 !important; }
         .text-primary { color: #009879 !important; }
         .border-left-primary { border-left: .25rem solid #009879 !important; }
+        .user-logo-badge {
+    display: flex;
+    align-items: center;
+    background: #f8f9fc; /* Couleur de fond légère */
+    padding: 5px 15px;
+    border-radius: 50px; /* Bord arrondi style badge */
+    border: 1px solid #e3e6f0;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.user-logo-badge:hover {
+    background: #eaecf4;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.user-icon {
+    color: #0866ff; /* Couleur de l'icône assortie à votre logo Biblio 2 */
+    margin-right: 10px;
+}
+
+.user-name-text {
+    font-weight: 700; /* Texte gras pour l'effet Logo */
+    color: #4e73df;
+    text-transform: capitalize; /* Première lettre en majuscule */
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+}
      
     </style>
 </head>
@@ -64,11 +98,19 @@ try {
 
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" data-toggle="dropdown">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?php echo htmlspecialchars($_SESSION['user_nom']); ?></span>
-                                <img class="img-profile rounded-circle" src="img/undraw_profile.svg">
+                                <div class="user-logo-badge">
+                                    <svg class="user-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                                        <path d="M12 11C13.6569 11 15 9.65685 15 8C15 6.34315 13.6569 5 12 5C10.3431 5 9 6.34315 9 8C9 9.65685 10.3431 11 12 11Z" stroke="currentColor" stroke-width="2"/>
+                                        <path d="M6 18.5C6 15.4624 8.68629 13 12 13C15.3137 13 18 15.4624 18 18.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                    </svg>
+                                   <span class="user-name-text">
+                                       <?php echo isset($_SESSION['user_nom']) ? htmlspecialchars($_SESSION['user_nom']) : 'Admin'; ?>
+                                   </span>
+                                </div>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in">
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                <a class="dropdown-item" href="logout.php" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i> Déconnexion
                                 </a>
                             </div>

@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-// Connexion DB (identique à votre code)
 $host = 'localhost'; $dbname = 'biblio'; $user = 'root'; $pass = '';
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $user, $pass);
@@ -9,10 +8,10 @@ try {
 } catch (PDOException $e) { die("Erreur : " . $e->getMessage()); }
 
 $erreur = "";
-$email_saisi = ""; // Variable pour stocker l'email
+$email_saisi = ""; 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $email_saisi = trim($_POST['email']); // On récupère ce qui a été tapé
+    $email_saisi = trim($_POST['email']); 
     $password = $_POST['password'];
 
     if (!empty($email_saisi) && !empty($password)) {
@@ -23,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($user && password_verify($password, $user['password'])) {
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['user_nom'] = $user['nom'];
-            header("Location: accueil.php");
+            header("Location: home.php");
             exit();
         } else {
             $erreur = "Informations incorrectes.";
@@ -73,7 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <h2>Connexion</h2>
         <?php if($erreur) echo "<div class='error'>$erreur</div>"; ?>
         
-        <form method="POST">
+        <form method="POST" action ="index.php">
             <input type="email" name="email" placeholder="Adresse e-mail" value="<?php echo htmlspecialchars($email_saisi); ?>" required>
             <input type="password" name="password" placeholder="Mot de passe" required>
             <button type="submit" class="btn-login">Se connecter</button>
