@@ -1,4 +1,10 @@
+ 
 <?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header("Location: index.php");
+    exit();
+}
 $host = 'localhost';
 $dbname = 'biblio'; 
 $user = 'root';
@@ -9,6 +15,13 @@ $totalEtudiants = 0;
 $totalLivres = 0;
 $etudiants = []; 
 
+
+
+// Si la session n'existe pas, on renvoie à la page de connexion
+if (!isset($_SESSION['user_id'])) {
+    header("Location: index.php");
+    exit();
+}
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $user, $pass);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -64,7 +77,7 @@ try {
 
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" data-toggle="dropdown">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Jordan Tsane</span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?php echo htmlspecialchars($_SESSION['user_nom']); ?></span>
                                 <img class="img-profile rounded-circle" src="img/undraw_profile.svg">
                             </a>
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in">

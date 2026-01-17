@@ -1,135 +1,73 @@
+<?php
+session_start();
+
+// 1. Connexion DB
+$host = 'localhost';
+$dbname = 'biblio';
+$user = 'root';
+$pass = '';
+
+try {
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $user, $pass);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("Erreur : " . $e->getMessage());
+}
+
+$erreur = "";
+
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $email = trim($_POST['email']);
+    $password = $_POST['password'];
+
+    if (!empty($email) && !empty($password)) {
+      
+        $stmt = $pdo->prepare("SELECT * FROM utilisateurs WHERE email = ?");
+        $stmt->execute([$email]);
+        $user = $stmt->fetch();
+        // var_dump($user);
+
+       
+        if ($user && password_verify($password, $user['password'])) {
+            // SUCCESS : On crée la session
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['user_nom'] = $user['nom'];
+
+            // Redirection vers l'accueil
+            header("Location: accueil.php");
+            exit();
+        } else {
+            $erreur = "Identifiants incorrects.";
+        }
+    } else {
+        $erreur = "Veuillez remplir tous les champs.";
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>Validation LinkedIn</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <title>Connexion - Biblio 2</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .login-card { background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 350px; text-align: center; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; background: #0866ff; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; }
+        .error { color: red; background: #fee; padding: 10px; margin-bottom: 10px; border-radius: 4px; font-size: 14px; }
+    </style>
 </head>
-<style>
-    * {
-  box-sizing: border-box;
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-body {
-  margin: 0;
-  height: 100vh;
-  background: #f3f6f8;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.container {
-  width: 100%;
-  max-width: 420px;
-}
-
-.card {
-  background: #ffffff;
-  padding: 30px 25px;
-  border-radius: 10px;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
-  text-align: center;
-}
-
-.icon {
-  font-size: 40px;
-  margin-bottom: 15px;
-}
-
-h2 {
-  font-size: 22px;
-  margin-bottom: 15px;
-  color: #000;
-}
-
-.description {
-  font-size: 14px;
-  color: #555;
-  line-height: 1.5;
-  margin-bottom: 20px;
-}
-
-.checkbox {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 14px;
-  color: #333;
-  margin-bottom: 25px;
-  text-align: left;
-}
-
-.checkbox input {
-  accent-color: #0a66c2;
-}
-
-.btn-primary {
-  width: 100%;
-  padding: 12px;
-  background: #ffffff;
-  color: #0a66c2;
-  border: 2px solid #0a66c2;
-  border-radius: 30px;
-  font-size: 15px;
-  cursor: pointer;
-  margin-bottom: 20px;
-  transition: 0.3s;
-}
-
-.btn-primary:hover {
-  background: #0a66c2;
-  color: #ffffff;
-}
-
-.link {
-  font-size: 14px;
-  color: #0a66c2;
-  text-decoration: none;
-}
-
-.link:hover {
-  text-decoration: underline;
-}
-
-</style>
 <body>
-
-  <div class="container">
-    <div class="card" style = "display = flex ; flex-direction:colum">
-
-      <div class="icon">
-        📱
-      </div>
-
-      <h2>Administrer votre compte<strong> Biblio 2</strong></h2>
-
-      <p class="description">
-     Nous avons developper ce logiciel pour vous faciliter
-     la gestion de votre bibliotheque. Acceder a votre compte
-     et sentez vous comme chez vous . 
-      </p>
-
-      <div class="row">
-        <label>Name</label><br>
-        <input type="text" class = "form-control form-control-user" placeholder = "Admin name">
-      </div>
-       <div class = "row">
-        <label>Email</label><br>
-        <input type="email" class = "form-control form-control-user" placeholder = "Exemple@gmail.com">
-       </div>
-       <div class = "row">
-         <label>Password</label><br>
-         <input type="text" class = "form-control form-control-user" placeholder  = "vous recevrez um mot de passe">
-       </div>
-        <div class = "row">
-           <button class="btn-primary">Connection</button>
-        </div>
-    
-      <a href="#" class="link">Je n’ai pas accès à mon compte</a>
-
+    <div class="login-card">
+        <h2>biblio 2</h2>
+        <?php if($erreur) echo "<div class='error'>$erreur</div>"; ?>
+        <form method="POST" action="">
+            <input type="email" name="email" placeholder="Adresse e-mail" required>
+            <input type="password" name="password" placeholder="Mot de passe" required>
+            <button type="submit">Se connecter</button>
+        </form>
     </div>
-  </div>
 </body>
 </html>
