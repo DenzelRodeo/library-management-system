@@ -1,223 +1,86 @@
- 
 <?php
 session_start();
-if (!isset($_SESSION['user_id'])) {
-    header("Location: index.php");
-    exit();
-}
-$host = 'localhost';
-$dbname = 'biblio'; 
-$user = 'root';
-$pass = '';
 
-// Initialisation des compteurs
-$totalEtudiants = 0;
-$totalLivres = 0;
-$etudiants = []; 
-
-
-
-// Si la session n'existe pas, on renvoie à la page de connexion
-if (!isset($_SESSION['user_id'])) {
-    header("Location: index.php");
-    exit();
-}
+// Connexion DB (identique à votre code)
+$host = 'localhost'; $dbname = 'biblio'; $user = 'root'; $pass = '';
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $user, $pass);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $query = "SELECT * FROM etudiant ORDER BY code_etudiant DESC";
-    $stmt = $pdo->query($query);
-    $etudiants = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    $totalEtudiants = count($etudiants);
-    $queryLivres = "SELECT COUNT(*) FROM livre";
-    $totalLivres = $pdo->query($queryLivres)->fetchColumn();
-    $queryEmprunt = "SELECT COUNT(*) FROM emprunter";
-    $totalEmprunt = $pdo->query($queryEmprunt)->fetchColumn();
+} catch (PDOException $e) { die("Erreur : " . $e->getMessage()); }
 
-} catch (PDOException $e) {
-    echo '<div class="alert alert-danger m-3">Erreur : ' . $e->getMessage() . '</div>';
+$erreur = "";
+$email_saisi = ""; // Variable pour stocker l'email
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $email_saisi = trim($_POST['email']); // On récupère ce qui a été tapé
+    $password = $_POST['password'];
+
+    if (!empty($email_saisi) && !empty($password)) {
+        $stmt = $pdo->prepare("SELECT * FROM utilisateurs WHERE email = ?");
+        $stmt->execute([$email_saisi]);
+        $user = $stmt->fetch();
+
+        if ($user && password_verify($password, $user['password'])) {
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['user_nom'] = $user['nom'];
+            header("Location: accueil.php");
+            exit();
+        } else {
+            $erreur = "Informations incorrectes.";
+        }
+    } else {
+        $erreur = "Veuillez remplir tous les champs.";
+    }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Biblio 2 - Tableau de Bord</title>
-
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,600,700,800" rel="stylesheet">
-    <link href="css/biblio-2.css" rel="stylesheet">
-
+    <meta charset="UTF-8">
+    <title>Connexion - Biblio</title>
     <style>
-        .bg-primary, .btn-primary, .dropdown-header { background-color: #009879 !important; border-color: #009879 !important; }
-        .text-primary { color: #009879 !important; }
-        .border-left-primary { border-left: .25rem solid #009879 !important; }
-     
+        body { font-family: Arial, sans-serif; background: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .card { background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 350px; text-align: center; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
+        .btn-login { width: 100%; padding: 12px; background: #0866ff; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; margin-bottom: 10px; }
+        .btn-register { display: block; text-decoration: none; width: 100%; padding: 10px; background: #42b72a; color: white; border-radius: 6px; font-weight: bold; font-size: 14px; box-sizing: border-box; }
+        .error { color: red; background: #fee; padding: 10px; margin-bottom: 10px; border-radius: 4px; font-size: 14px; }
+        hr { border: 0; border-top: 1px solid #ddd; margin: 20px 0; }
+        .logo-container {
+        margin-bottom: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+       }
+      .logo-container svg {
+       filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.1));
+       }
     </style>
 </head>
-
-<body id="page-top">
-
-    <div id="wrapper">
-        <?php require 'view/includes/sidebar.php' ?>
-
-        <div id="content-wrapper" class="d-flex flex-column">
-            <div id="content">
-
-                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                        <i class="fa fa-bars" style="color: #009879;"></i>
-                    </button>
-                    <ul class="navbar-nav ml-auto">
-                
-                        <div class="topbar-divider d-none d-sm-block"></div>
-
-                        <li class="nav-item dropdown no-arrow">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" data-toggle="dropdown">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?php echo htmlspecialchars($_SESSION['user_nom']); ?></span>
-                                <img class="img-profile rounded-circle" src="img/undraw_profile.svg">
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in">
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i> Déconnexion
-                                </a>
-                            </div>
-                        </li>
-                    </ul>
-                </nav>
-
-                <div class="container-fluid">
-
-                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">Statistiques Globales</h1>
-    
-    <a href="generate_pdf.php?type=global&date=<?php echo date('Y-m-d'); ?>" 
-       target="_blank" 
-       class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-        <i class="fas fa-download fa-sm text-white-50" id = "btnGenererPDF"></i> Générer Rapport PDF (<?php echo date('d/m/Y'); ?>)
-    </a>
+<body>
+    <div class="card">
+        <div class="logo-container">
+    <svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="12" cy="12" r="11" fill="#0866ff"/>
+        <path d="M6.5 17.5L10.5 15.5V5.5L6.5 7.5V17.5Z" fill="white"/>
+        <path d="M17.5 17.5L13.5 15.5V5.5L17.5 7.5V17.5Z" fill="#e0e0e0"/>
+        <path d="M11 10.5C11 9.67157 11.6716 9 12.5 9C13.3284 9 14 9.67157 14 10.5C14 11.1 13.7 11.5 13 12L11 14V15H14" 
+              stroke="#0866ff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <h1 style="margin: 10px 0 0 0; color: #0866ff; font-size: 24px;">Biblio 2</h1>
 </div>
-
-                    <div class="row d-flex justify-content-center">
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-primary shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Étudiants Inscrits</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $totalEtudiants; ?></div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-users fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-success shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Livres en Stock</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $totalLivres ?></div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-book fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-warning shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Emprunts</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $totalEmprunt ?></div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-exclamation-circle fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-lg-6 mb-4">
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Gestion des Ressources</h6>
-                                </div>
-                                <div class="card-body">
-                                    <div class="text-center">
-                                        <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="img/undraw_posting_photo.svg" alt="...">
-                                    </div>
-                                    <p>Bienvenue sur l'interface de gestion <strong>Biblio 2</strong>. Vous pouvez ici gérer les stocks de livres, suivre les emprunts et administrer les comptes étudiants en quelques clics.</p>
-                                    <a href="liste_livres.php">Consulter le catalogue &rarr;</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-            <footer class="sticky-footer bg-white">
-                <div class="container my-auto">
-                    <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Biblio 2026</span>
-                    </div>
-                </div>
-            </footer>
-        </div>
-    </div>
-
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Prêt à partir ?</h5>
-                    <button class="close" type="button" data-dismiss="modal">×</button>
-                </div>
-                <div class="modal-body">Sélectionnez "Déconnexion" ci-dessous si vous êtes prêt à fermer votre session actuelle.</div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Annuler</button>
-                    <a class="btn btn-primary" href="logout.php">Déconnexion</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-    <script src="vendor/chart.js/Chart.min.js"></script>
-    <script src="js/biblio-2.min.js"></script>
-    <script>
-    // On cible le bouton par son ID
-    document.getElementById('btnGenererPDF').addEventListener('click', function(e) {
-        let icon = this.querySelector('i');
+        <h2>Connexion</h2>
+        <?php if($erreur) echo "<div class='error'>$erreur</div>"; ?>
         
-        // 1. On change l'icône de téléchargement en icône de chargement
-        icon.classList.remove('fa-download');
-        icon.classList.add('fa-spinner', 'fa-spin'); 
-        
-        // 2. On attend 3 secondes avant de remettre l'icône originale
-        setTimeout(() => {
-            icon.classList.remove('fa-spinner', 'fa-spin');
-            icon.classList.add('fa-download');
-        }, 3000); 
-    });
-</script>
+        <form method="POST">
+            <input type="email" name="email" placeholder="Adresse e-mail" value="<?php echo htmlspecialchars($email_saisi); ?>" required>
+            <input type="password" name="password" placeholder="Mot de passe" required>
+            <button type="submit" class="btn-login">Se connecter</button>
+        </form>
 
+        <hr>
+        <a href="view/authentification/inscription.php" class="btn-register">Créer un nouveau compte</a>
+    </div>
 </body>
 </html>
