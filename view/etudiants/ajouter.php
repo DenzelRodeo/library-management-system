@@ -19,13 +19,13 @@ try {
             $stmt = $pdo->prepare($sql);
             $stmt->execute([$nom, $prenom, $adresse, $classe]);
 
-            $message = '<div class="alert alert-success shadow">🎉 Étudiant enregistré avec succès !</div>';
+            $message = '<div class="alert alert-success shadow"> Étudiant enregistré avec succès !</div>';
         } else {
-            $message = '<div class="alert alert-warning shadow">⚠️ Veuillez remplir le nom et le prénom.</div>';
+            $message = '<div class="alert alert-warning shadow"> Veuillez remplir le nom et le prénom.</div>';
         }
     }
 } catch (PDOException $e) {
-    $message = '<div class="alert alert-danger shadow">❌ Erreur : ' . $e->getMessage() . '</div>';
+    $message = '<div class="alert alert-danger shadow"> Erreur : ' . $e->getMessage() . '</div>';
 }
 ?>
 <!DOCTYPE html>
@@ -143,16 +143,10 @@ try {
         <div id="content-wrapper" class="d-flex flex-column">
 
             <div id="content">
-
-                <?php require '../includes/topbar.php' ?>
-
                 <div class="container-fluid">
-
-                    <h1 class="h3 mb-4 text-gray-800">Gestion des Étudiants</h1>
-
-                    <nav aria-label="breadcrumb">
+                    <nav aria-label="breadcrumb" style = "margin-top : 9px ">
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item"><a href="index.php">Accueil</a></li>
+                            <li class="breadcrumb-item"><a href="index.php">Etudiant</a></li>
                             <li class="breadcrumb-item active">Enregistrer un Étudiant</li>
                         </ol>
                     </nav>

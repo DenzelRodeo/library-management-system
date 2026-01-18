@@ -26,27 +26,27 @@ Nous avons utliser un serveur Apache et un systeme de gestion de base de donnée
 
 b -> Programmation 
 
-Nous avons utiliser le langage de programmation PHP (Hypertext Preprocessor) Pour la connexion à MYSQL et l'interpretation de nos fichier .php 
-dans le but de recuperer des données dans la base et convertir les fichier en html que nous renverrons à Apache qui ensuite le retournera au 
-navigateur quand l'utilisateur entrera l'url : https://biblio.local
-
+Nous avons utiliser le langage de programmation PHP (Hypertext Preprocessor) Pour la connexion à MYSQL  dans le but d'y recuperer des données que nous renverrons à Apache qui ensuite le retournera au navigateur quand l'utilisateur entrera l'url 
+https://biblio.local
 
 c-> Securité
+
+Utilisation des requetes preparer pour proteger les données de la base contre les Injections SQL 
 
 Integration des fontions comme htmlspecialchars() pour proteger l'affichage des données contre les attaques XSS.
 
 
 II -) Contexte Du Projet
 
-1-> Utilisateurs(étudiants ou apprenant)
+1-> Administrateur
 
-Biblio 2 est une application web en ligne permettant aux utilisateurs  d'emprunter un livre .
+Biblio 2 est une application web permettant a son administrateur d'informatiser la gestion de sa bibliotheque.
 
-2-> Administrateur (Bibliothequere)
+2-> Fontionalités
 
 biblio 2 permet à l'admin de gerer sa bibliotheque :
 
-- Voir , Ajouter , Modifier et Supprimer la liste des utilisateurs , des livres et des emprunts
+- Voir , Ajouter , Modifier et Supprimer la liste des usagers , les livres et les emprunts
 
 III -) Travail en Equipe & Test 
 
@@ -54,19 +54,19 @@ III -) Travail en Equipe & Test
 
 Nous avons utiliser Git et GitHub pour gerer les versions du projet et gerer notre travail en equipe pour cela le chef de projet à envoyer le projet sur le serveur de GitHub et nous a invités à collaborer nous les menbres ainsi que notre formatteur. Chacun de nous à ensuite creer une branche du projet en local.
 
-2-> Test 
+2-> Test Unitaire
 
-Nous avons testées toutes les fontionnalités du projet chez chaque menbre responsable et si le code est etait approuvée 
+Nous avons testées chaque fontionnalités du projet chez chaque menbre responsable et si le code est etait approuvée 
 la suite etait de faire un commit avec le message "Mise à jour corrective" et à la fin nous avons push(Envoyer) le code sur gitHub.
 
   IV -) Evolution future du projet
 
 Integration d'une Intelligence Artificielle via l'API Croq Cloud(modéle Llama 3) pour sa rapidité et sa gratuité.
-Il se sera charger de recommander des livres à l'utilisateur en fontion du genre , de l'auteur et de la date d'edition
-et fournira à l'administrateur des recommandation sur livre qui sont les genre , les auteurs et les années d'edition des livres les plus demandées.
+Il  sera charger de recommander des livres à l'utilisateur en fontion du genre , de l'auteur et de la date d'edition
+et fournira à l'administrateur des recommandations en fonction des livres les plus demandées.
 
 
-                                      Merci pour votre Attention ! c'etait le groupe 7
+                                      Merci pour votre Attention ! c'etait le groupe 7 ...
 
 
 

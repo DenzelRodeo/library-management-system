@@ -1,214 +1,85 @@
 <?php
+session_start();
 
-$user = 'root' ; $host = 'localhost'; $db = 'biblio' ; $password = '';
-
+$host = 'localhost'; $dbname = 'biblio'; $user = 'root'; $pass = '';
 try {
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $user, $pass);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) { die("Erreur : " . $e->getMessage()); }
 
-   $pdo = new PDO("mysql:host = $host ; dbname = $db ", $user , $password );
-   $pdo -> setAttribute(PDO::ATTR_ERRMODE ,PDO::ERRMODE_EXCEPTION);
-   $sql = 'SELECT * FROM etudiant';
-   $stmt = $pdo->query($sql);
+$erreur = "";
+$email_saisi = ""; 
 
-   $etudiant = $stmt->fetchAll(PDO::ASSOC);
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $email_saisi = trim($_POST['email']); 
+    $password = $_POST['password'];
 
-   var_dump($etudiant);
+    if (!empty($email_saisi) && !empty($password)) {
+        $stmt = $pdo->prepare("SELECT * FROM utilisateurs WHERE email = ?");
+        $stmt->execute([$email_saisi]);
+        $user = $stmt->fetch();
 
-} catch (Exception $e) {
-
-    die('Erreur !'.$e->getMessage());
+        if ($user && password_verify($password, $user['password'])) {
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['user_nom'] = $user['nom'];
+            header("Location: home.php");
+            exit();
+        } else {
+            $erreur = "Informations incorrectes.";
+        }
+    } else {
+        $erreur = "Veuillez remplir tous les champs.";
+    }
 }
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="fr">
 <head>
-
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <title>Biblio 2 - Inscription</title>
-
-    <!-- Custom fonts for this template-->
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
-
-    <!-- Custom styles for this template-->
-    <link href="css/biblio-2.css" rel="stylesheet">
-
-</head>
-<nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-
-<body style = " background-color: #f2f4f6;">
- <a class="sidebar-brand d-flex align-items-center justify-content-center" href="../../index.php" style = "font-size : 30px;font-family:times roman">
-                <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fas fa-laugh-wink"></i>
-                </div>
-                <div class="sidebar-brand-text mx-3">Biblio <sup>2</sup></div>
-            </a>
-
-                    <!-- Sidebar Toggle (Topbar) -->
-                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                        <i class="fa fa-bars"></i>
-                    </button>
-</nav>
-       <div class="container">
-    <div class="row">
-        <div class="col-md-6 offset-md-3">
-            <a class="sidebar-brand d-flex align-items-center justify-content-center mt-5" href="../../index.php" style="font-size: 30px; font-family: 'Times New Roman'; color: #009879; text-decoration: none;">
-                <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fas fa-book-reader"></i>
-                </div>
-                <div class="sidebar-brand-text mx-3">Biblio <sup>2</sup></div>
-            </a>
-
-            <div class="text-center mt-3 mb-2 text-dark">
-                <h1 style="font-family: Arial, sans-serif; font-weight: bold;">Création de compte</h1>
-            </div>
-
-            <div class="card my-5 border-0 shadow">
-                <form id="registerForm" class="card-body p-lg-5 card-body-color" method="post" action="#">
-                    <div class="text-center">
-                        <img src="https://cdn-icons-png.flaticon.com/512/2232/2232688.png"
-                             class="img-fluid profile-image-pic img-thumbnail rounded-circle my-3" 
-                             alt="logo-biblio">
-                    </div>
-
-                    <div class="mb-3">
-                        <input type="text" class="form-control" id="username" placeholder="Nom" name="username" required>
-                    </div>
-                    <div class="mb-3">
-                        <input type="text" class="form-control" id="prenom" placeholder="Prenom" name="prenom" required>
-                    </div>
-                    <div class="mb-3">
-                        <input type="text" class="form-control" id="adresse" placeholder="Adresse" name="email" required>
-                    </div>
-                    <div class="mb-3">
-                        <input type="text" class="form-control" id="email" placeholder="classe" name="email" required>
-                    </div>
-                    <div class="mb-3">
-                        <input type="password" class="form-control" id="password1" placeholder="Mot de passe" name="password1" required>
-                    </div>
-                    <div class="mb-3">
-                        <input type="password" class="form-control" id="password2" placeholder="Confirmation du mot de passe" name="password2" required>
-                        <div id="passError" class="error-msg">Les mots de passe ne sont pas identiques.</div>
-                    </div>
-
-                    <div class="text-center">
-                        <button type="submit" class="btn btn-color px-5 mb-5 w-100">Créer mon compte</button>
-                    </div>
-
-                    <div class="form-text text-center text-dark">
-                        Avez-vous déjà un compte ? <br>
-                        <a href="view/authentification/connection.php" class="text-dark fw-bold" style="text-decoration:underline">Connectez-vous</a>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-     <style>
-         .btn-color {
-             background-color: #1b61e2;
-             color: #fff;
-
-         }
-
-         .profile-image-pic {
-             height: 200px;
-             width: 200px;
-             object-fit: cover;
-         }
-
-
-
-       .cardbody-color {
-            background-color : #ffffff  ;
-            box-shadow: 0 6px 8px rgba(0,0,0,0.1);
-             border-radius : 10px ;
-        }
-
-         a {
-             text-decoration: none;
-         }
-         <>
-    body {
-        background-color: #f8f9fc;
-    }
-    .card-body-color {
-        background-color: #ebf2f1; /* Fond très légèrement teinté */
-    }
-    .btn-color {
-        background-color: #009879;
-        color: white;
-        transition: 0.3s;
-    }
-    .btn-color:hover {
-        background-color: #007d63;
-        color: white;
-    }
-    .profile-image-pic {
-        height: 150px;
-        width: 150px;
-        object-fit: cover;
-    }
-    .form-control:focus {
-        border-color: #009879;
-        box-shadow: 0 0 0 0.2rem rgba(0, 152, 121, 0.25);
-    }
-    .error-msg {
-        color: #e74c3c;
-        font-size: 0.85rem;
-        margin-top: 5px;
-        display: none;
-    }
+    <meta charset="UTF-8">
+    <title>Connexion - Biblio</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .card { background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 350px; text-align: center; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
+        .btn-login { width: 100%; padding: 12px; background: #0866ff; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; margin-bottom: 10px; }
+        .btn-register { display: block; text-decoration: none; width: 100%; padding: 10px; background: #42b72a; color: white; border-radius: 6px; font-weight: bold; font-size: 14px; box-sizing: border-box; }
+        .error { color: red; background: #fee; padding: 10px; margin-bottom: 10px; border-radius: 4px; font-size: 14px; }
+        hr { border: 0; border-top: 1px solid #ddd; margin: 20px 0; }
+        .logo-container {
+        margin-bottom: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+       }
+      .logo-container svg {
+       filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.1));
+       }
     </style>
+</head>
+<body>
+    <div class="card">
+        <div class="logo-container">
+    <svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="12" cy="12" r="11" fill="#0866ff"/>
+        <path d="M6.5 17.5L10.5 15.5V5.5L6.5 7.5V17.5Z" fill="white"/>
+        <path d="M17.5 17.5L13.5 15.5V5.5L17.5 7.5V17.5Z" fill="#e0e0e0"/>
+        <path d="M11 10.5C11 9.67157 11.6716 9 12.5 9C13.3284 9 14 9.67157 14 10.5C14 11.1 13.7 11.5 13 12L11 14V15H14" 
+              stroke="#0866ff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <h1 style="margin: 10px 0 0 0; color: #0866ff; font-size: 24px;">Biblio 2</h1>
+</div>
+        <h2>Connexion</h2>
+        <?php if($erreur) echo "<div class='error'>$erreur</div>"; ?>
+        
+        <form method="POST" action ="index.php">
+            <input type="email" name="email" placeholder="Adresse e-mail" value="<?php echo htmlspecialchars($email_saisi); ?>" required>
+            <input type="password" name="password" placeholder="Mot de passe" required>
+            <button type="submit" class="btn-login">Se connecter</button>
+        </form>
 
-<script>
-    document.getElementById('registerForm').addEventListener('submit', function(e) {
-    let isValid = true;
-
-    // 1. Éléments
-    const email = document.getElementById('email');
-    const pass1 = document.getElementById('password1');
-    const pass2 = document.getElementById('password2');
-    
-    const emailError = document.getElementById('emailError');
-    const passError = document.getElementById('passError');
-
-    // 2. Regex Email
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    // Validation Email
-    if (!emailRegex.test(email.value)) {
-        emailError.style.display = 'block';
-        email.style.borderColor = '#e74c3c';
-        isValid = false;
-    } else {
-        emailError.style.display = 'none';
-        email.style.borderColor = '#ddd';
-    }
-
-    // Validation Mots de passe
-    if (pass1.value !== pass2.value) {
-        passError.style.display = 'block';
-        pass2.style.borderColor = '#e74c3c';
-        isValid = false;
-    } else {
-        passError.style.display = 'none';
-        pass2.style.borderColor = '#ddd';
-    }
-
-    // Empêcher l'envoi si invalide
-    if (!isValid) {
-        e.preventDefault();
-    }
- });
-</script>        
-<?php require '../includes/footer.php' ?>
+        <hr>
+        <a href="view/authentification/inscription.php" class="btn-register">Créer un nouveau compte</a>
+    </div>
 </body>
+</html>

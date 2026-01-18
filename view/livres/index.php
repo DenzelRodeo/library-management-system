@@ -1,4 +1,10 @@
 <?php
+session_start();
+if (!isset($_SESSION['id'])) {
+    
+header("Location: ../../index.php");
+exit();
+}
 $host = 'localhost';
 $dbname = 'biblio'; 
 $user = 'root';
@@ -70,24 +76,24 @@ try {
 
     <div id="wrapper">
        <div style="display:flex; flex-direction: row">
-    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
-            <div class="sidebar-brand-icon rotate-n-15">
-                <i class="fas fa-book-reader"></i>
-            </div>
-            <div class="sidebar-brand-text mx-3" style="font-weight: bolder">Biblio <sup>2</sup></div>
-        </a>
+            <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+                <a class="sidebar-brand d-flex align-items-center justify-content-center" href="../../index.php">
+                    <div class="sidebar-brand-icon rotate-n-15">
+                        <i class="fas fa-book-reader"></i>
+                    </div>
+                   <div class="sidebar-brand-text mx-3" style="font-weight: bolder">Biblio <sup>2</sup></div>
+              </a>
 
-        <hr class="sidebar-divider my-0">
+            <hr class="sidebar-divider my-0">
 
-        <li class="nav-item active">
-            <a class="nav-link" href="../../index.php">
-                <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>Acceuil</span>
-            </a>
-        </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="../../index.php">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Acceuil</span>
+               </a>
+           </li>
 
-        <hr class="sidebar-divider">
+            <hr class="sidebar-divider">
 
         <div class="sidebar-heading">Interface</div>
 
@@ -155,7 +161,7 @@ try {
 
                     <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         <div class="input-group">
-                            <input type="text" id="searchInput" class="form-control bg-light border-0 small" placeholder="Rechercher par titre, auteur ou ISBN...">
+                            <input type="text" id="searchInput" class="form-control bg-light border-0 small" placeholder="Rechercher par titre, auteur ou code...">
                             <div class="input-group-append">
                                 <button class="btn btn-primary" type="button">
                                     <i class="fas fa-search fa-sm"></i>
@@ -197,16 +203,16 @@ try {
                                                     <td><?= htmlspecialchars($liv['titre']) ?></td>
                                                     <td><?= htmlspecialchars($liv['auteur']) ?></td>
                                                     <td><?= htmlspecialchars($liv['date_edition']) ?></td>
-                                                    <td>
+                                                    <td style = "display:flex">
                                         <a href="modifier.php?id=<?= $liv['code_livre'] ?>">
         <button class="btn btn-sm btn-info">
-            <i class="fas fa-edit"></i>
+            <i class="fas fa-edit" value= "">modifier</i>
         </button>
     </a>
 
     <a href="supprimer.php?id=<?= $liv['code_livre'] ?>" onclick="return confirm('Supprimer ce livre ?');">
         <button class="btn btn-sm btn-danger">
-            <i class="fas fa-trash"></i>
+            <i class="fas fa-trash">supprimer</i>
         </button>
     </a>
 </td>   
